@@ -16,5 +16,15 @@ namespace EncapsulateClassesWithFactory.MyWork.Descriptors
         }
 
         public string DescriptorName => descriptorName;
+
+        public static AttributeDescriptor ForInteger(string attr, Type type)
+        {
+            return new DefaultDescriptor(attr, type, typeof(int));
+        }
+
+        public static AttributeDescriptor ForDate(string attr, Type type)
+        {
+            return new DefaultDescriptor(attr, type, typeof(DateTime));
+        }
     }
 }
