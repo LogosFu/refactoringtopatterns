@@ -7,18 +7,20 @@ namespace EncapsulateCompositeWithBuilder.MyWork
     {
         private StringBuilder attributes;
         private IList<TagNode> children = new List<TagNode>();
+        public TagNode parentNode { get; set; }
         private string name;
         private string value = string.Empty;
 
         public TagNode(string name)
         {
             this.name = name;
-            this.attributes = new StringBuilder();
+            attributes = new StringBuilder();
         }
 
         public void Add(TagNode tagNode)
         {
-            this.children.Add(tagNode);
+            tagNode.parentNode = this;
+            children.Add(tagNode);
         }
 
         public void AddAttribute(string attribute, string value)
@@ -46,7 +48,7 @@ namespace EncapsulateCompositeWithBuilder.MyWork
             }
 
             result += this.value +
-                "</" + this.name + ">";
+                      "</" + this.name + ">";
             return result;
         }
     }
