@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using EncapsulateCompositeWithBuilder.MyWork;
 
 namespace RefactoringToPatterns.EncapsulateCompositeWithBuilder.MyWork
@@ -19,10 +20,9 @@ namespace RefactoringToPatterns.EncapsulateCompositeWithBuilder.MyWork
                 SamplePrice +
                 "</price>";
 
-            TagNode priceTag = new TagNode("price");
-            priceTag.AddAttribute("currency", "USD");
-            priceTag.AddValue(SamplePrice);
-            Assert.AreEqual(expected, priceTag.ToString());
+           string acutal = new TagBuilder("price","currency","USD",SamplePrice).ToXml(); 
+   
+            Assert.AreEqual(expected, acutal);
         }
 
         [Test]
@@ -30,14 +30,12 @@ namespace RefactoringToPatterns.EncapsulateCompositeWithBuilder.MyWork
         {
             var expected =
                 "<product>" +
-                    "<price>" +
-                    "</price>" +
-                "</product>"; 
+                "<price>" +
+                "</price>" +
+                "</product>";
 
-            TagNode productTag = new TagNode("product");
-            productTag.Add(new TagNode("price"));
-
-            Assert.AreEqual(expected, productTag.ToString());
+            string actual = new TagBuilder("product").AddChild("price").ToXml();
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -45,18 +43,19 @@ namespace RefactoringToPatterns.EncapsulateCompositeWithBuilder.MyWork
         {
             var expected =
                 "<orders>" +
-                    "<order>" +
-                        "<product>" +
-                        "</product>" +
-                    "</order>" +
+                "<order>" +
+                "<product>" +
+                "</product>" +
+                "</order>" +
                 "</orders>";
 
             TagNode ordersTag = new TagNode("orders");
             TagNode orderTag = new TagNode("order");
             orderTag.Add(new TagNode("product"));
             ordersTag.Add(orderTag);
+            string actual = new TagBuilder("orders").AddChild("order").AddChild("product").ToXml();
 
-            Assert.AreEqual(expected, ordersTag.ToString());
+            Assert.AreEqual(expected, actual);
         }
     }
 }
